@@ -4,10 +4,9 @@ import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
@@ -42,22 +41,24 @@ public class Main {
 	// Liste o primeiro nome (coluna `full_name`) dos 20 primeiros jogadores.
 	public List<String> q3() {
 		List<Players> players = readListCsv();
+		  List<String> names = new ArrayList<String>();
 		
-		return players.stream().filter(player -> !player.getFull_name().isEmpty())
-				.map(Players::getFull_name)
-				.limit(20)
-				.collect(Collectors.toList());
+		for(Players player : players) {
+			names.add(player.getName());
+			if(names.size() == 20) {
+				break;
+			}
+			
+		}
+		
+		return names;
 	}
 
 	// Quem são os top 10 jogadores que possuem as maiores cláusulas de rescisão?
 	// (utilize as colunas `full_name` e `eur_release_clause`)
 	public List<String> q4() {
 		List<Players> players = readListCsv();
-		return players.stream().filter(player -> !player.getFull_name().isEmpty() && !player.getEur_release_clause().isEmpty())
-				.sorted()
-				.map(Players::getFull_name)
-				.limit(10)
-				.collect(Collectors.toList());
+		return null;
 	}
 
 	// Quem são os 10 jogadores mais velhos (use como critério de desempate o campo `eur_wage`)?
