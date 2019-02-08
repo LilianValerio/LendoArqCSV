@@ -7,13 +7,17 @@ import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
-import com.opencsv.CSVReader;
-import com.opencsv.CSVReaderBuilder;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
+
+import challenge.beans.Players;
 
 public class Main {
 
 	// Quantas nacionalidades (coluna `nationality`) diferentes existem no arquivo?
 	public int q1() {
+		
+		
 		return 0;
 	}
 
@@ -46,30 +50,31 @@ public class Main {
 		return null;
 	}
 	
-	public void lerListaCSV() {
-		 Reader reader;
+	public void readListCsv() {
+		 
+		Reader reader;
 		try {
-			
 			reader = Files.newBufferedReader(Paths.get("src/main/resources/data.csv"));
-			 CSVReader csvReader = new CSVReaderBuilder(reader).withSkipLines(1).build();
-		        List<String[]> pessoas = csvReader.readAll();
-		      int tamanho  = pessoas.size();
-		      for (String[] pessoa : pessoas) {
-		            System.out.println("id : " + pessoa[0] +
-		                            " - name : " + pessoa[1] +
-		                            " - full_name : " + pessoa[3]
-		                            );
-		    }  
-		      
+			  CsvToBean<Players> csvToBean = new CsvToBeanBuilder(reader)
+		                .withType(Players.class)
+		                .build();
+
+		        List<Players> players = csvToBean.parse();
+
+		        for (Players player : players) {
+		            System.out.println(player);
+		        }
 		} catch (IOException e) {
-			e.printStackTrace();
+			 System.out.println("erro ao popular a Lista");
 		}
+		
+	      
 	       
 	}
 	
 	public static void main(String[] args){
 		
 		Main main = new Main();
-		main.lerListaCSV();
+		main.readListCsv();
 	}
 }
